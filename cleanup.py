@@ -2,6 +2,7 @@
 import xml.etree.ElementTree as ET
 import glob
 import os
+import csv
 import hashlib
 import sys
 import datetime
@@ -11,6 +12,7 @@ fileschecked = 0
 issues = 0
 xmlerrors = 0
 fileschanged = 0
+aliases = []
 
 
 # Calculate md5 hash to check for changes in file.
@@ -222,7 +224,8 @@ for filename in glob.glob("systems*/*.xml"):
             issues += 1
 
     # Check that names follow conventions
-    if not root.findtext("./name") + ".xml" == os.path.basename(filename):
+    systemidentifier = root.findtext("./name")
+    if not systemidentifier + ".xml" == os.path.basename(filename):
         print "Name of system not the same as filename: " + filename
         issues += 1
     for obj in planets + stars:
@@ -252,6 +255,22 @@ for filename in glob.glob("systems*/*.xml"):
                     issues += 1
                 else:
                     uniquetags.append(child.tag)
+    
+    # Find aliases (only include planets in the systems/ directory)
+    if filename.split("/")[0]=="systems":
+        systemnames = root.findall("./name")
+        for name in systemnames:
+            aliases.append([name.text.encode('utf-8'),systemidentifier,"system",systemnames[0].text.encode('utf-8')])
+            	
+        for star in stars:
+            starnames = star.findall("./name")
+            for name in starnames:
+                aliases.append([name.text.encode('utf-8'),systemidentifier,"star",starnames[0].text.encode('utf-8')])
+
+        for planet in planets:
+            planetnames = planet.findall("./name")
+            for name in planetnames:
+                aliases.append([name.text.encode('utf-8'),systemidentifier,"planet",planetnames[0].text.encode('utf-8')])
 
     # Check binary planet lists
     checkForBinaryPlanet(root, ".//binary/planet", "Planets in binary systems, P-type")
@@ -287,9 +306,12 @@ if issues > 0:
     print "Number of issues: %d (see above)." % issues
     errorcode = 3
 else:
+    print "Generating CSV aliases.csv with %d entries." % len(aliases)
+    with open('aliases.csv', 'wb') as csvfile:
+        aliaseswriter = csv.writer(csvfile, delimiter=',', quoting=csv.QUOTE_MINIMAL)
+        aliaseswriter.writerows(aliases)
+    
     print "No issues found."
-
-print "Generating CSV aliases.csv"
 
 sys.exit(errorcode)
 
