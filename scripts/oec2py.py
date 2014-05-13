@@ -343,19 +343,15 @@ class number:
 
 
     def __add__(self, num):
-
         return self.value + num
 
     def __sub__(self, num):
-
         return self.value - num
 
     def __lt__(self, num):
-
         return self.value < num
 
     def __le__(self, num):
-        
         return self.value <= num
 
     def __ne__(self, num):
@@ -373,171 +369,129 @@ class number:
             return self.value != num
 
     def __gt__(self, num):
-    
         return self.value > num
     
     def __ge__(self, num):
-
         return self.value >= num
 
     def __mul__(self, num):
-
         return self.value * num
 
     def __div__(self, num):
-        
         return self.value / num
 
     def __floordiv__(self, num):
-        
         return self.value // num
 
     def __mod__(self, num):
-
         return self.value % num
 
     def __divmod__(self, num):
-        
         return divmod(self.value, num)
 
     def __pow__(self, num,*z):
-        
         return pow(self.value, num,*z)
 
     def __float__(self):
-
         return float(self.value)
 
     def __cmp__(self, num):
-
         return cmp(self.value, num)
 
     def __and__(self, num):
-
         return self.value & num
 
     def __abs__(self):
-
         return abs(self.value)
 
     def __coerce__(self, num):
-
         return coerce(self.value, num)
 
     def __hash__(self):
-
         return hash(self.value)
 
     def __hex__(self):
-
         return hex(self.value)
 
     def __int__(self):
-
         return int(self.value)
 
     def __invert__(self):
-
         return ~self.value
 
     def __long__(self):
-
         return long(self.value)
 
     def __lshift__(self, num):
-
         return self.value << num
 
     def __neg__(self):
-
         return -self.value
 
     def __nonzero__(self):
-
         return self.value != 0
     
     def __oct__(self):
-
         return oct(self.value)
 
     def __or__(self, num):
-
         return self.value | num
 
     def __pos__(self):
-
         return +self.value
 
     def __radd__(self, num):
-
         return num + self.value
 
     def __rdiv__(self, num):
-
         return num / self.value
 
     def __rdivmod(self, num):
-
         return divmod(num, self.value)
 
     def __repr__(self):
-
         return str(self)
 
     def __rfloordiv__(self, num):
-
         return num // self.value
 
     def __rlshift__(self, num):
-
         return num << self.value
 
     def __rmod__(self, num):
-
         return num % self.value
 
     def __rmul__(self, num):
-
         return num * self.value
 
     def __ror__(self,num):
-
         return num | self.value
 
     def __rpow__(self, num,*z):
-
         return pow(num, self.value,*z)
 
     def __rrshift__(self, num):
-
         return num >> self.value 
 
     def __rshift__(self, num):
-
         return self.value >> num
 
     def __rsub__(self, num):
-
         return num - self.value
 
     def __rtruediv__(self, num):
-
         return num / self.value
 
     def __rxor__(self, num):
-
         return num^self.value
 
     def __truediv__(self, num):
-
         return self.value / num
 
     def __xor__(self, num):
-
         return self.value^num
 
     def bit_length(self):
-
         return self.value.bit_length()
 
     def asymmetric(self):
@@ -578,12 +532,11 @@ def xml_to_obj(xml):
     Converts a str xml file to a System object. Xml file is assumed to be\
     correct in both format and content.
     """
-
     root = ET.fromstring(xml)
     return xml_to_obj_helper(root)
 
-if __name__ is "__main__":
-    kepler67 = xml_to_obj(open("systems/Kepler-67.xml").read())
+if __name__ == "__main__":
+    kepler67 = xml_to_obj(open("../systems/Kepler-67.xml").read())
     print(kepler67)
     print(kepler67.find_system("Kepler-67 b", "planet"))
 
