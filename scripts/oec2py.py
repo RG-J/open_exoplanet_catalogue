@@ -13,59 +13,59 @@ class color:
     UNDERLINE = '\033[4m'
     END = '\033[0m'
 
-class System:
-    """System object. May be a planet, star, or binary.
+class CelesitalObject:
+    """CelesitalObject object. May be a planet, star, or binary.
    
-    System type is the only required parameter for creation. The following\
+    CelesitalObject type is the only required parameter for creation. The following\
     are acceptable types:
 
-    sys = System("system")
-    bin = System("binary")
-    star = System("star")
-    planet = System("planet")
+    sys = CelesitalObject("system")
+    bin = CelesitalObject("binary")
+    star = CelesitalObject("star")
+    planet = CelesitalObject("planet")
 
-    System parameters must be defined with a key:
-    star = System("star", mass=2)
+    CelesitalObject parameters must be defined with a key:
+    star = CelesitalObject("star", mass=2)
 
-    Adding systems to each other can be done as follows
+    Adding CelestialObjects to each other can be done as follows
 
-    sys.add_binary(bin)
+    sys.add_binary(binary)
     bin.add_star(star)
     star.add_planet(planet)
     
     setting as a property will also add to the list:
-    sys.star = System("star")
+    sys.star = CelesitalObject("star")
 
     children can be accessed as follows:
-    sys = System("system")
+    sys = CelesitalObject("system")
     sys.planets
     >>>['<planet1>', '<planet2>'...]
     sys.stars
     sys.binaries
 
-    system properties can be accessed as any attribute would
+    CelestialObject properties can be accessed as any attribute would
     sys.mass
     >>>10
     sys.radius
     >>>15
  
-    str(sys) will by default return the system and all children
+    str(sys) will by default return the CelestialObject and all children
 
-    str_nochild will return the properties of just the system, no children
+    str_nochild will return the properties of just the CelestialObject, no children
 
     str_planets, str_stars, str_binaries will return all of the given type
 
     """
     
     def __init__(self, object_type, **kwargs):
-        """(str)->System
+        """(str)->CelesitalObject
         arguments must be given with keys. All values and keys are assumed \
         to be correct and accurate.
 
-        sys = System("planet", mass=10)
-        sys = System("system")
-        sys = System("star")
-        sys = System("binary")
+        sys = CelesitalObject("planet", mass=10)
+        sys = CelesitalObject("system")
+        sys = CelesitalObject("star")
+        sys = CelesitalObject("binary")
         """
 
         for key, value in kwargs.iteritems():
@@ -77,11 +77,11 @@ class System:
         self.binaries = []
 
     def __str__(self, tab=""):
-        """(System, str="") -> str
-        returns a string with each system property. Children are indented.\
+        """(CelesitalObject, str="") -> str
+        returns a string with each CelestialObject property. Children are indented.\
         Name is always the first tag.
 
-        planet = System("planet", name="foo", mass=10)
+        planet = CelesitalObject("planet", name="foo", mass=10)
         str(planet)
         >>>name:['foo']
         mass: 10
@@ -94,7 +94,7 @@ class System:
         for tag in reversed(dir(self)):
             if(tag == "name" and getattr(self,tag) != []):
                 name += tab + color.BOLD + tag + color.END + ": " + str(getattr(self,tag)) + "\n"
-            elif(tag[:4] == "add_" or tag[:4] == "str_" or tag == "find_system"):
+            elif(tag[:4] == "add_" or tag[:4] == "str_" or tag == "find_CelestialObject"):
                 pass
             elif(tag[:2] != "__"):
                 if(tag == "planets" or tag == "stars" or tag == "binaries"):
@@ -106,8 +106,8 @@ class System:
         return name + tempstr + subtempstr
 
     def str_nochild(self):
-        """(System) - str
-        Same as str(system), but children are not included
+        """(CelesitalObject) - str
+        Same as str(CelestialObject), but children are not included
         """
 
         tempstr = ""
@@ -115,7 +115,7 @@ class System:
         for tag in reversed(dir(self)):
             if(tag == "name" and getattr(self,tag) != []):
                 name += color.BOLD + tag + color.END + ": " + str(getattr(self,tag)) + "\n"
-            elif(tag[:4] == "add_" or tag[:4] == "str_" or tag == "find_system"):
+            elif(tag[:4] == "add_" or tag[:4] == "str_" or tag == "find_CelestialObject"):
                 pass
             elif(tag[:2] != "__"):
                 if(tag == "planets" or tag == "stars" or tag == "binaries"):
@@ -154,8 +154,8 @@ class System:
         return tempstr
 
     def add_planet(self, planet):
-        """(System) -> NoType
-        attach a planet system as a child to the given system. Planet is \
+        """(CelesitalObject) -> NoType
+        attach a planet CelestialObject as a child to the given CelestialObject. Planet is \
         appended to the planets list
         """
         
@@ -164,8 +164,8 @@ class System:
         else:
             raise Exception("Not a planet")
     def add_star(self, star):
-        """(System) -> NoType
-        attach a planet system as a child to the given system. Star is \
+        """(CelesitalObject) -> NoType
+        attach a planet CelestialObject as a child to the given CelestialObject. Star is \
         appended to the stars list
         """
 
@@ -175,8 +175,8 @@ class System:
             raise Exception("Not a star")
 
     def add_binary(self, binary):
-        """(System) -> NoType
-        attach a planet system as a child to the given system. Binary is \
+        """(CelesitalObject) -> NoType
+        attach a planet CelestialObject as a child to the given CelestialObject. Binary is \
         appended to the binaries list
         """
         if(binary.object_type == "binary"):
@@ -184,24 +184,24 @@ class System:
         else:
             raise Exception("Not a binary")
 
-    def add_any_system(self, system):
-        """(System) -> NoType
-        System is added to the list it belongs in.
+    def add_any_CelestialObject(self, celestialObject):
+        """(CelesitalObject) -> NoType
+        CelesitalObject is added to the list it belongs in.
         """
 
-        object_type = system.object_type
+        object_type = celestialObject.object_type
         if(object_type == "star"):
-            self.add_star(system)
+            self.add_star(celestialObject)
         elif(object_type == "planet"):
-            self.add_planet(system)
+            self.add_planet(celestialObject)
         elif(object_type == "binary"):
-            self.add_binary(system)
+            self.add_binary(celestialObject)
         else:
-            raise Exception("Not known system type")
+            raise Exception("Not known CelestialObject type")
 
-    def find_system(self, name, object_type):
-        """(System, str, str) -> System
-        find a subsystem by its name and object_type.
+    def find_CelestialObject(self, name, object_type):
+        """(CelesitalObject, str, str) -> CelesitalObject
+        find a sub-CelestialObject by its name and object_type.
         Should not have to find a system (has no parent)
         """
 
@@ -210,23 +210,23 @@ class System:
                 if name in st.name:
                     return st
             for binary in self.binaries:
-                return binary.find_system(name, object_type)
+                return binary.find_CelestialObject(name, object_type)
         elif(object_type == "planet"):
             for plan in self.planets:
                 if name in plan.name:
                     return plan
             for st in self.stars:
-                return st.find_system(name, object_type)
+                return st.find_CelestialObject(name, object_type)
             for binary in self.binaries:
-                return binary.find_system(name, object_type)
+                return binary.find_CelestialObject(name, object_type)
         elif(object_type == "binary"):
             for binary in self.binaries:
                 if name in binary.name:
                     return binary
                 else:
-                    return binary.find_system(name, object_type)
+                    return binary.find_CelestialObject(name, object_type)
         else:
-            raise Exception("Not known system type")
+            raise Exception("Not known CelestialObject type")
 
 
 
@@ -237,15 +237,15 @@ class System:
             self.name.append(value)
         elif(key == "name" and type(value) == list):
             self.__dict__["name"] = value
-        elif(key == "planet" and type(value) == System):
+        elif(key == "planet" and type(value) == CelesitalObject):
             self.planets.append(value)
         elif(key == "planet" and type(value) == list):
             self.__dict__["planets"] = value
-        elif(key == "star" and type(value) == System):
+        elif(key == "star" and type(value) == CelesitalObject):
             self.stars.append(value)
         elif(key == "star" and type(value) == list):
             self.__dict__["stars"] = value
-        elif(key == "binary" and type(value) == System):
+        elif(key == "binary" and type(value) == CelesitalObject):
             self.binaries.append(value)
         elif(key == "binary" and type(value) == list):
             self.__dict__["binaries"] = value
@@ -503,15 +503,15 @@ class number:
 
 
 def xml_to_obj_helper(element):
-    """(ElementTree.Element) -> System
-    Helper function to traverse element tree to construct an arbitrary system.\
+    """(ElementTree.Element) -> CelesitalObject
+    Helper function to traverse element tree to construct an arbitrary CelestialObject.\
     Intended to be used with xml_to_obj
     """
 
-    sys = System(element.tag)
+    sys = CelesitalObject(element.tag)
     for el in element:
         if(len(list(el)) != 0):
-            sys.add_any_system(xml_to_obj_helper(el))
+            sys.add_any_CelestialObject(xml_to_obj_helper(el))
         elif(len(el.attrib) == 0):
             setattr(sys, el.tag, el.text)
         else:
@@ -528,8 +528,8 @@ def xml_to_obj_helper(element):
     return sys
 
 def xml_to_obj(xml):
-    """(str) -> System
-    Converts a str xml file to a System object. Xml file is assumed to be\
+    """(str) -> CelesitalObject
+    Converts a str xml file to a CelesitalObject object. Xml file is assumed to be\
     correct in both format and content.
     """
     root = ET.fromstring(xml)
@@ -538,5 +538,5 @@ def xml_to_obj(xml):
 if __name__ == "__main__":
     kepler67 = xml_to_obj(open("../systems/Kepler-67.xml").read())
     print(kepler67)
-    print(kepler67.find_system("Kepler-67 b", "planet"))
+    print(kepler67.find_CelestialObject("Kepler-67 b", "planet"))
 
